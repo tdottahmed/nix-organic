@@ -73,6 +73,21 @@
     </div>
   </div>
   <a href="#lightCustomModal" class="btn btn-warning btn-small lightCustomModal_open dnone">{{ __('Edit') }}</a>
+  <script>
+    $(function() {
+      @if (session('success'))
+        onSuccessMsg('{{ session('success') }}');
+      @endif
+
+      @if (session('error'))
+        onErrorMsg('{{ session('error') }}');
+      @endif
+
+      @if (session('warning'))
+        onWarningMsg('{{ session('warning') }}');
+      @endif
+    });
+  </script>
   @stack('scripts')
 </body>
 

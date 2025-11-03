@@ -30,6 +30,100 @@
             </div>
           </div>
         </div>
+        <div class="row pt-3">
+          @if ($fraudCheckHistory == null)
+            <div class="col-12">
+              <div class="card text-center">
+                <div class="card-body">
+                  <h5 class="card-title mb-3">{{ __('No Fraud Check Found') }}</h5>
+                  <p class="card-text mb-3">
+                    {{ __('This customer has no recorded fraud check history yet. You can run a fraud check to see if there are any suspicious activities or order anomalies.') }}
+                  </p>
+                  <a href="{{ route('backend.checkFraud', $mdata->order_no) }}" class="btn btn-primary px-4">
+                    {{ __('Run Fraud Check') }}
+                  </a>
+                </div>
+              </div>
+            </div>
+          @else
+            @if ($fraudCheckHistory != null)
+              <div class="col-12">
+                <div class="card shadow-sm">
+                  <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">{{ __('Fraud Check & History') }}</h5>
+                    <a href="{{ route('backend.checkFraud', $mdata->order_no) }}"
+                       class="btn btn-primary px-4">{{ __('Re-run Fraud Check') }}</a>
+                  </div>
+                  <div class="card-body">
+                    <div class="row text-center">
+                      <div class="col-md-3 col-12">
+                        <div class="rounded border p-3">
+                          <p class="mb-1">{{ __('Total Orders') }}:
+                            <strong>{{ $fraudCheckHistory->total_orders }}</strong>
+                          </p>
+                          <p class="text-success mb-1">{{ __('Success Orders') }}:
+                            <strong>{{ $fraudCheckHistory->success_orders }}</strong>
+                          </p>
+                          <p class="text-danger mb-0">{{ __('Cancelled Orders') }}:
+                            <strong>{{ $fraudCheckHistory->cancelled_orders }}</strong>
+                          </p>
+                          <p class="mb-0">{{ __('Success Rate') }}:
+                            <strong>{{ $fraudCheckHistory->success_rate }}%</strong>
+                          </p>
+                        </div>
+                      </div>
+                      {{-- Steadfast --}}
+                      <div class="col-md-3 col-12 mb-md-0 mb-3">
+                        <div class="rounded border p-3">
+                          <h6>{{ __('Steadfast') }}</h6>
+                          <p class="mb-1">{{ __('Total Orders') }}:
+                            <strong>{{ $fraudCheckHistory->steadfast_total_orders }}</strong>
+                          </p>
+                          <p class="text-success mb-1">{{ __('Success') }}:
+                            <strong>{{ $fraudCheckHistory->steadfast_success_order }}</strong>
+                          </p>
+                          <p class="text-danger mb-0">{{ __('Cancelled') }}:
+                            <strong>{{ $fraudCheckHistory->steadfast_cancelled_order }}</strong>
+                          </p>
+                        </div>
+                      </div>
+                      {{-- Pathao --}}
+                      <div class="col-md-3 col-12 mb-md-0 mb-3">
+                        <div class="rounded border p-3">
+                          <h6>{{ __('Pathao') }}</h6>
+                          <p class="mb-1">{{ __('Total Orders') }}:
+                            <strong>{{ $fraudCheckHistory->pathao_total_orders }}</strong>
+                          </p>
+                          <p class="text-success mb-1">{{ __('Success') }}:
+                            <strong>{{ $fraudCheckHistory->pathao_success_order }}</strong>
+                          </p>
+                          <p class="text-danger mb-0">{{ __('Cancelled') }}:
+                            <strong>{{ $fraudCheckHistory->pathao_cancelled_order }}</strong>
+                          </p>
+                        </div>
+                      </div>
+                      {{-- Redex --}}
+                      <div class="col-md-3 col-12">
+                        <div class="rounded border p-3">
+                          <h6>{{ __('Redex') }}</h6>
+                          <p class="mb-1">{{ __('Total Orders') }}:
+                            <strong>{{ $fraudCheckHistory->redex_total_orders }}</strong>
+                          </p>
+                          <p class="text-success mb-1">{{ __('Success') }}:
+                            <strong>{{ $fraudCheckHistory->redex_success_order }}</strong>
+                          </p>
+                          <p class="text-danger mb-0">{{ __('Cancelled') }}:
+                            <strong>{{ $fraudCheckHistory->redex_cancelled_order }}</strong>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            @endif
+          @endif
+        </div>
         <div class="row mt-25">
           <div class="col-lg-8">
             <div class="card">
