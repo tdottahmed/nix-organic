@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Order_master;
 use App\Models\Order_item;
-
+use App\Models\OrderShipment;
+use App\Services\SteadFastCourierService;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -151,6 +152,8 @@ class OrdersController extends Controller
 	{
 		$payment_status_list = DB::table('payment_status')->get();
 		$order_status_list = DB::table('order_status')->get();
+		$orderShipment = OrderShipment::where('order_id', $id)->first();
+		dd($orderShipment);
 
 		$mdata = DB::table('order_masters as a')
 			->leftJoin('users as b', 'a.customer_id', '=', 'b.id')
@@ -571,7 +574,6 @@ class OrdersController extends Controller
 	public function checkFraud($order_id)
 	{
 		$order = Order_master::where('order_no', $order_id)->first();
-
 		$customerPhone = $order->phone ? trim($order->phone) : null;
 		if (!$customerPhone) {
 			return back()->with('error', 'Customer phone not found in shipping address.');
@@ -620,5 +622,20 @@ class OrdersController extends Controller
 		);
 
 		return back()->with('status', 'Fraud check saved successfully.');
+	}
+	//  method for steadfast courier
+	public function steadfastCourier($order_id)
+	{
+		$order = Order_master::where('order_no', $order_id)->first();
+		try {
+			$courierService = new SteadFastCourierService($order);
+			$response = $courierService->handle();
+			if ($response['success']) {
+				return back()->with('status', $response['message']);
+			}
+			return back()->with('error', $response['message']);
+		} catch (\Exception $e) {
+			return back()->with('error', 'An error occurred: ' . $e->getMessage());
+		}
 	}
 }

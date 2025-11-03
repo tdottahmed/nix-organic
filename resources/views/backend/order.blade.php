@@ -286,6 +286,22 @@
             <div class="card mt-25">
               <div class="card-header">{{ __('Shipping Information') }}</div>
               <div class="card-body">
+                @if ($orderShipment)
+                  <div class="d-flex">
+                    <a href="#" class="btn btn-theme px-4">
+                      {{ __('Track Consignment') }}
+                    </a>
+                    <a href="#" class="btn btn-theme px-4">
+                      {{ __('Consignment Details') }}
+                    </a>
+                  </div>
+                @else
+                  <a href="{{ route('backend.steadfast-courier', [$mdata->order_no]) }}" class="btn btn-theme px-4">
+                    {{ __('Send to steadfast courier') }}
+                  </a>
+                @endif
+              </div>
+              <div class="card-body">
                 @if ($mdata->customer_name != '')
                   <p><strong>{{ __('Name') }}</strong>: {{ $mdata->customer_name }}</p>
                 @endif
